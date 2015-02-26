@@ -26,7 +26,7 @@ let match_or_forward resolver zone ~src ~dst packet =
 let () =
     Lwt_main.run (
         (* server address and port *)
-        let address = "127.0.0.1" in
+        let address = "0.0.0.0" in
         let port = 53 in
         (* create forward resolver using /etc/resolv.conf *)
         Dns_resolver_unix.create () >>= fun resolver ->

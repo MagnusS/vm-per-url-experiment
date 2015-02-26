@@ -56,21 +56,21 @@ def process_static_webpage_path(rootdir,domain):
                 result = process(path,x,"192.168.56.%d" % i, "255.255.255.0", "192.168.56.1")
 
                 oldurl = '"http://' + result["oldurl"] + '"'
-                urlmap[oldurl] = '"http://' + result["ip"] + '/' + result["filename"] + '"'
+                urlmap[oldurl] = '"http://' + result["url"] + '/' + result["filename"] + '"'
 
                 oldurl = '"http://' + result["oldurl"] + '/"'
-                urlmap[oldurl] = '"http://' + result["ip"] + '/' + result["filename"] + '"'
+                urlmap[oldurl] = '"http://' + result["url"] + '/' + result["filename"] + '"'
 
                 oldurl = oldurl.replace("http://%s" % domain, "")
                 if len(oldurl) > 1:
-                    urlmap[oldurl] = '"http://' + result["ip"] + '/' + result["filename"] + '"'
+                    urlmap[oldurl] = '"http://' + result["url"] + '/' + result["filename"] + '"'
 
                 oldurl = '"http://' + result["oldurl"] + '/' + result["filename"] + '"'
-                urlmap[oldurl] = '"http://' + result["ip"] + '/' + result["filename"] + '"'
+                urlmap[oldurl] = '"http://' + result["url"] + '/' + result["filename"] + '"'
 
                 oldurl = oldurl.replace("http://%s" % domain, "")
                 if len(oldurl) > 1:
-                    urlmap[oldurl] = '"http://' + result["ip"] + '/' + result["filename"] + '"'
+                    urlmap[oldurl] = '"http://' + result["url"] + '/' + result["filename"] + '"'
 
                 results.append(result)
                 #print(result)
@@ -132,9 +132,10 @@ def create_zone(zonefile, domain, meta):
 domain = 'www.skjegstad.com'
 print( "Indexing %s..." % domain)
 meta = process_static_webpage_path(domain, domain)
-create_makefile(meta)
-print("\nMakefile generated. Type 'make' to build, 'make run' to run and 'make destroy' to stop. Start DNS server with 'make dns'")
+
 create_zone("%s.zone" % domain, domain, meta)
 print("\nZone file generated in %s.zone." % domain)
 
+create_makefile(meta)
+print("\nMakefile generated. Type 'make' to build, 'make run' to run and 'make destroy' to stop VMs. Start local DNS server with 'make dns'")
 
