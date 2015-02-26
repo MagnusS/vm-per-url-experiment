@@ -94,7 +94,7 @@ with open("Makefile", "w") as makefile:
 
     # make targets
     for r in results:
-        makefile.write("staging/%s/mir-www.xen: staging/%s/htdocs/%s\n\tcd staging/%s ; mirage configure --xen\n\t+cd staging/%s ; make\n\n" % (r['unikernel'], r['unikernel'], r['filename'], r['unikernel'], r['unikernel'])) 
+        makefile.write("staging/%s/mir-www.xen: staging/%s/htdocs/%s\n\tcd staging/%s ; mirage configure --xen\n\tcd staging/%s ; make\n\n" % (r['unikernel'], r['unikernel'], r['filename'], r['unikernel'], r['unikernel'])) 
 
     # clean
     makefile.write("clean:\n")
@@ -104,11 +104,15 @@ with open("Makefile", "w") as makefile:
     # run
     makefile.write("run:\n")
     for r in results:
-        makefile.write("\tcd staging/%s ; +sudo xl create www.xl memory=32 \"vif=['bridge=br0']\" \"name='%s'\"\n" % (r['unikernel'], r['unikernel']))
+        makefile.write("\tcd staging/%s ; sudo xl create www.xl memory=32 \"vif=['bridge=br0']\" \"name='%s'\"\n" % (r['unikernel'], r['unikernel']))
     makefile.write("\tsudo xl list\n")
 
     # destroy
     makefile.write("destroy:\n")
     for r in results:
-        makefile.write("\t+sudo xl destroy %s || true\n" % r['unikernel'])
+        makefile.write("\tsudo xl destroy %s || true\n" % r['unikernel'])
     makefile.write("\tsudo xl list\n")
+
+print("Makefile generated. Type 'make' to build, 'make run' to run and 'make destroy' to stop.")
+
+
