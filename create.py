@@ -120,7 +120,7 @@ def create_makefile(metadata):
         makefile.write("clean:\n")
         makefile.write("\trm -f serve_dns.cmi serve_dns.cmx serve_dns.o serve_dns\n")
         for r in metadata:
-            makefile.write("\tcd staging/%s ; make clean\n" % (r['unikernel'])) 
+            makefile.write("\tcd staging/%s ; make clean || true\n" % (r['unikernel'])) 
 
         # run
         makefile.write("run:\n")
@@ -153,12 +153,13 @@ if len(sys.argv) != 2:
     print ("\nFor details, see http://www.skjegstad.com/blog/2015/03/25/mirageos-vm-per-url-experiment/\n")
     sys.exit(-1)
 
-domain = sys.argv[1]
+domain = (sys.argv[1]).replace("/","")
 print( "Indexing %s..." % domain)
 meta = process_static_webpage_path(domain, domain)
 
-create_zone("%s.zone" % domain, domain, meta)
-print("\nZone file generated in %s.zone." % domain)
+zonefile = "%s.zone" % domain
+create_zone(zonefile, domain, meta)
+print("\nZone file generated in %s." % zonefile)
 
 create_makefile(meta)
 print("\nMakefile generated. Type 'make' to build, 'make run' to run and 'make destroy' to stop VMs. Start local DNS server with 'make dns'")
