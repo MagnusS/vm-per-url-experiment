@@ -18,6 +18,7 @@
 import os
 import hashlib
 import shutil
+import sys
 
 def make_url(path,filename):
     filename=filename.split("?")[0] # strip ?...
@@ -144,7 +145,15 @@ def create_zone(zonefile, domain, meta):
         for r in meta:
             z.write ('%s\tIN\tA\t%s\n' % (r['url'], r['ip']))
 
-domain = 'www.skjegstad.com'
+if len(sys.argv) != 2: 
+    print ("Usage: create.py [static web page domain/directory]\n")
+    print ("To use:")
+    print ("\t$ wget -m [domain name]")
+    print ("\t$ ./create.py [domain name]")
+    print ("\nFor details, see http://www.skjegstad.com/blog/2015/03/25/mirageos-vm-per-url-experiment/\n")
+    sys.exit(-1)
+
+domain = sys.argv[1]
 print( "Indexing %s..." % domain)
 meta = process_static_webpage_path(domain, domain)
 
